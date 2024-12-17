@@ -1,17 +1,38 @@
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Trash2Icon } from 'lucide-react';
 import type { BlogPost } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { useGlobalStore } from '@/store/store';
+import { toast } from 'sonner';
 
 interface PostCardProps {
   post: BlogPost;
 }
 
 export function PostCard({ post }: PostCardProps) {
+  const { blogs, setBlogs } = useGlobalStore();
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const updatedBlogs = blogs.filter(blog => blog.id !== post.id);
+    setBlogs(updatedBlogs);
+    localStorage.setItem('blogs', JSON.stringify(updatedBlogs));
+    toast.success('Post deleted successfully');
+  };
+
   return (
     <Link href={`/posts/${post.id}`}>
-      <Card className="hover:bg-accent transition-colors h-full">
+      <Card className="hover:bg-accent transition-colors h-full group relative">
+        <Button
+          variant="destructive"
+          size="icon"
+          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={handleDelete}
+        >
+          <Trash2Icon className="h-4 w-4" />
+        </Button>
         <CardHeader>
           <CardTitle className="line-clamp-2">{post.title}</CardTitle>
         </CardHeader>

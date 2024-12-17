@@ -3,6 +3,9 @@ export interface BlogPost {
   title: string;
   content: string;
   youtubeUrl: string;
+  videoType: string;
+  subtitles: string;
+  messages: any[];
   createdAt: string;
 }
 
