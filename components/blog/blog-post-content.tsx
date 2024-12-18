@@ -60,12 +60,14 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
             />
           ),
           code: ({ node, className, children, ...props }) => (
-            <code
-              className={`${className} block bg-muted p-4 rounded-lg text-black dark:text-white`}
-              {...props}
-            >
-              {children}
-            </code>
+            <pre className="bg-muted rounded-lg overflow-x-auto text-black dark:text-white ">
+              <code
+                className={`${className} block pr-4`}
+                {...props}
+              >
+                {children}
+              </code>
+            </pre>
           ),
         }}
       >

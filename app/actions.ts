@@ -13,6 +13,7 @@ import { MATH_SCIENCE_SYSTEM_PROMPT } from "@/lib/prompts";
 import { PODCAST_SYSTEM_PROMPT } from "@/lib/prompts";
 import { ROADMAP_SYSTEM_PROMPT } from "@/lib/prompts";
 import { TECHNOLOGY_REVIEW_SYSTEM_PROMPT } from "@/lib/prompts";
+// import { responseFromGemini } from "@/lib/utils/langchain";
 import { responseFromGemini } from "@/lib/utils/openai";
 import { getSubtitles } from "@/lib/utils/subtitles";
 

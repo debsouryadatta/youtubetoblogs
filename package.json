@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
+    "@langchain/core": "^0.3.24",
+    "@langchain/openai": "^0.3.14",
     "@next/swc-wasm-nodejs": "13.5.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.4",
@@ -55,6 +57,7 @@
     "html2canvas": "^1.4.1",
     "input-otp": "^1.4.1",
     "jspdf": "^2.5.2",
+    "langchain": "^0.3.7",
     "lucide-react": "^0.446.0",
     "mermaid": "^11.4.1",
     "nanoid": "^5.0.9",

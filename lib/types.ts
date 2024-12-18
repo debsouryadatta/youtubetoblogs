@@ -1,3 +1,8 @@
+export interface Message {
+  role: "user" | "assistant" | "system";
+  content: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -5,7 +10,7 @@ export interface BlogPost {
   youtubeUrl: string;
   videoType: string;
   subtitles: string;
-  messages: any[];
+  messages: Message[];
   createdAt: string;
 }
 

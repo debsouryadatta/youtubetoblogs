@@ -4,11 +4,12 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { Toaster } from "@/components/ui/sonner"
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'YouTube Subtitle Blog',
+  title: 'YouTube To Blogs',
   description: 'Transform YouTube videos into beautiful blog posts',
 };
 
@@ -37,12 +38,12 @@ export default function RootLayout({
                 </div> */}
                 <div className="flex items-center gap-6">
                   <nav className="flex items-center gap-6">
-                    <a href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                    <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
                       Home
-                    </a>
-                    <a href="/about" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                    </Link>
+                    <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
                       About
-                    </a>
+                    </Link>
                   </nav>
                   <div className="h-4 w-[1px] bg-border" />
                   <ThemeToggle />

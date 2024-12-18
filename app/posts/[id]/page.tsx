@@ -12,6 +12,7 @@ import { useRef } from 'react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useGlobalStore } from '@/store/store';
+import { ChatDrawer } from '@/components/blog/chat-drawer';
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
   const { blogs } = useGlobalStore();
@@ -96,9 +97,10 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                 </time>
               </div>
               <Separator orientation="vertical" className="h-4" />
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <YoutubeIcon className="h-4 w-4 text-red-600" />
-                <span>YouTube Blog</span>
+                <span className="whitespace-nowrap">YouTube Blog</span>
+                <ChatDrawer postId={post.id} />
               </div>
             </div>
           </div>
