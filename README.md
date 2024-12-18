@@ -93,6 +93,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@debsourya005](https://twitter.com/debsourya005)
+Debsourya Datta - [@debsourya005](https://twitter.com/debsourya005)
 
 Project Link: [https://github.com/debsouryadatta/youtubetoblogs](https://github.com/debsouryadatta/youtubetoblogs)
