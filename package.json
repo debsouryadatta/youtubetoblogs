@@ -84,6 +84,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
     "vaul": "^0.9.9",
+    "youtube-transcript": "^1.2.1",
     "zod": "^3.24.1",
     "zustand": "^5.0.2"
   }

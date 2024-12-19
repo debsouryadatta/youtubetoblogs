@@ -5,10 +5,6 @@ import axios from 'axios';
 export async function getSubtitles(videoId: string) {
     try {
 
-        
-      
-
-
         let config = {
           method: 'get',
           maxBodyLength: Infinity,
