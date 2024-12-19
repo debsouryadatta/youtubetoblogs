@@ -15,8 +15,9 @@ import { ROADMAP_SYSTEM_PROMPT } from "@/lib/prompts";
 import { TECHNOLOGY_REVIEW_SYSTEM_PROMPT } from "@/lib/prompts";
 // import { responseFromGemini } from "@/lib/utils/langchain";
 import { responseFromGemini } from "@/lib/utils/openai";
-import { getSubtitles } from "@/lib/utils/subtitles";
-import { getTranscript } from "@/lib/utils/transcript";
+// import { getSubtitles } from "@/lib/utils/subtitles";
+// import { getTranscript } from "@/lib/utils/transcript";
+import { getSubtitles2 } from "@/lib/utils/subtitles2";
 
 const getSystemPrompt = (videoType: string) => {
     switch (videoType) {
@@ -52,7 +53,8 @@ const getSystemPrompt = (videoType: string) => {
 export const getSubtitlesAction = async (videoId: string) => {
     try {
         console.log("Video ID: ", videoId);
-        const subtitles = await getTranscript(videoId);
+        // const subtitles = await getTranscript(videoId);
+        const subtitles = await getSubtitles2(videoId);
         return subtitles;
     } catch (error) {
         throw error;

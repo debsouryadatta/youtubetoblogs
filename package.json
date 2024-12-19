@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googleapis/youtube": "^20.0.0",
     "@hookform/resolvers": "^3.9.1",
     "@langchain/core": "^0.3.24",
     "@langchain/openai": "^0.3.14",
@@ -47,6 +48,7 @@
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
     "axios": "^1.7.9",
+    "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
@@ -66,6 +68,7 @@
     "next-themes": "^0.3.0",
     "openai": "^4.76.3",
     "postcss": "8.4.30",
+    "protobufjs": "^7.4.0",
     "react": "18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "18.2.0",

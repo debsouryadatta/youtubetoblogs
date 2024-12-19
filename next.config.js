@@ -1,14 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export',
-  // experimental: {
-    serverExternalPackages: [ '@langchain/core', '@langchain/groq' ],
-  // },
-  // experimental: {
-  //   serverActions: true,
-  // },
-
-  
   eslint: {
     ignoreDuringBuilds: true,
   },
