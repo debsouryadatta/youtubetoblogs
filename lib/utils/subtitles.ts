@@ -14,17 +14,26 @@ export async function getSubtitles(videoId: string) {
           maxBodyLength: Infinity,
           url: `https://www.youtube.com/watch?v=${videoId}`,
           headers: {
-            'Cookie': 'GPS=1; VISITOR_INFO1_LIVE=Jsc3mhuO81w; VISITOR_PRIVACY_METADATA=CgJJThIEGgAgTA%3D%3D; YSC=PwzF2X7eK8M'
+              'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+              'Accept-Language': 'en-US,en;q=0.5',
+              'Accept-Encoding': 'gzip, deflate, br',
+              'Connection': 'keep-alive',
+              'Upgrade-Insecure-Requests': '1',
+              'Cache-Control': 'max-age=0',
+              'TE': 'Trailers'
           }
         };
         
         const response = await axios.request(config);
+        console.log("Response status:", response.status);
         const html = response.data;
-
+        
         // Extract the ytInitialPlayerResponse from the HTML
         const playerResponseMatch = html.match(/ytInitialPlayerResponse\s*=\s*({.+?});/);
         if (!playerResponseMatch) {
-            console.log("Could not find player response data");
+            console.log("HTML content length:", html.length);
+            console.log("First 500 chars of HTML:", html.substring(0, 500));
             return null;
         }
 
@@ -32,7 +41,7 @@ export async function getSubtitles(videoId: string) {
         const captions = playerResponse?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
         
         if (!captions || captions.length === 0) {
-            console.log("No captions found for this video");
+            console.log("Player response structure:", JSON.stringify(playerResponse?.captions, null, 2));
             return null;
         }
 
