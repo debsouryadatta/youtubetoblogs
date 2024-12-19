@@ -3,7 +3,19 @@ import he from 'he';
 
 export async function getSubtitles(videoId: string) {
     try {
-        const response = await fetch(`https://www.youtube.com/watch?v=${videoId}`);
+        // Add user-agent and other headers to avoid being blocked
+        const headers = {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept': 'text/html,application/xhtml+xml,application/xml'
+        };
+
+        const response = await fetch(`https://www.youtube.com/watch?v=${videoId}`, { headers });
+        
+        if (!response.ok) {
+            console.log("Failed to fetch video page:", response.status);
+            return null;
+        }
         const html = await response.text();
 
         // Extract the ytInitialPlayerResponse from the HTML
