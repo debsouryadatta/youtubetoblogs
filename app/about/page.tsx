@@ -1,5 +1,6 @@
 'use client';
 
+import Footer from '@/components/footer';
 import { BookOpenIcon, BrainCircuitIcon, YoutubeIcon } from 'lucide-react';
 
 export default function AboutPage() {
@@ -19,69 +20,71 @@ export default function AboutPage() {
               About YouTube to Blogs
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-              Transform your favorite YouTube videos into well-structured, readable blog posts using the power of AI.
+              An AI-powered web application that transforms YouTube videos into well-structured, readable blog posts. Experience seamless content repurposing with our advanced features and user-friendly interface.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3 w-full max-w-4xl">
+          <div className="grid gap-8 md:grid-cols-3 w-full max-w-6xl">
             <div className="p-6 backdrop-blur-lg bg-white/50 dark:bg-white/5 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
               <YoutubeIcon className="h-12 w-12 text-red-500 mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                YouTube Integration
+                Versatile Video Support
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Simply paste any YouTube video URL and let our system extract the subtitles automatically.
+                Convert any YouTube video into a detailed blog post, supporting various content styles and video types with intelligent subtitle extraction.
               </p>
             </div>
 
             <div className="p-6 backdrop-blur-lg bg-white/50 dark:bg-white/5 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
               <BrainCircuitIcon className="h-12 w-12 text-purple-500 mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                AI-Powered Processing
+                AI-Powered Conversion
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Advanced AI algorithms transform video subtitles into coherent, well-structured blog posts with proper formatting.
+                Utilizing advanced AI technology for intelligent content formatting and structure, powered by OpenAI and Gemini-2.0-Flash.
               </p>
             </div>
 
             <div className="p-6 backdrop-blur-lg bg-white/50 dark:bg-white/5 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
               <BookOpenIcon className="h-12 w-12 text-blue-500 mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                Rich Content Support
+                Export & Storage
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Generated blogs support Markdown, KaTeX math formulas, Mermaid diagrams, and more for comprehensive content.
+                Export your blog posts as PDF files and enjoy secure local storage with no server sharing or login required.
               </p>
             </div>
           </div>
 
-          <div className="space-y-8 max-w-4xl w-full backdrop-blur-lg bg-white/50 dark:bg-white/5 p-8 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              How It Works
+          <div className="max-w-4xl space-y-8">
+            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+              Additional Features
             </h2>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">1. Select Your Video</h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="p-6 backdrop-blur-lg bg-white/50 dark:bg-white/5 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Interactive Chat Interface</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Copy and paste any YouTube video URL into our system. We support both standard youtube.com links and shortened youtu.be formats.
+                  Engage with your blog content through an interactive chat interface with convenient clear chat functionality.
                 </p>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">2. AI Processing</h3>
+              <div className="p-6 backdrop-blur-lg bg-white/50 dark:bg-white/5 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Responsive Design</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Our system extracts video subtitles and processes them using advanced AI models to generate well-structured, readable content.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">3. Rich Blog Post</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Get a beautifully formatted blog post with support for various content types including text, code blocks, mathematical formulas, and diagrams.
+                  Enjoy a seamless experience across all devices with our mobile-friendly, responsive interface.
                 </p>
               </div>
             </div>
           </div>
+
+          <div className="text-center max-w-3xl">
+            <p className="text-gray-600 dark:text-gray-300 mb-20">
+              Built with modern technologies including Next.js, TypeScript, Tailwind CSS, and Shadcn UI. Deployed with Docker and maintained with CI/CD practices.
+            </p>
+          </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 }
