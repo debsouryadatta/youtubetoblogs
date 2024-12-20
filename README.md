@@ -1,12 +1,18 @@
 # YouTube to Blogs
 
 <div align="center">
+<a href="https://github.com/debsouryadatta/aiverse">
+    <img src="https://res.cloudinary.com/diyxwdtjd/image/upload/v1734703380/projects/Screenshot_2024-12-20_at_7.28.23_PM_puk8vi.png" alt="Logo" width="800" height="500">
+  </a>
+</div>
+
+<div align="center">
   <h3>Transform YouTube Videos into Engaging Blog Posts</h3>
 
   <p align="center">
     An AI-powered tool that converts YouTube video content into well-structured, readable blog posts
     <br />
-    <a href="https://youtubetoblogs.vercel.app/">View Demo</a>
+    <a href="https://youtubetoblogs.souryax.tech">View Live Site</a>
     ·
     <a href="https://github.com/debsouryadatta/youtubetoblogs/issues">Report Bug</a>
     ·
@@ -36,7 +42,10 @@ YouTube to Blogs is an AI-powered web application that converts YouTube videos i
 - [Shadcn UI](https://ui.shadcn.com/) - UI Components
 - [OpenAI](https://openai.com/) - OpenAI Library
 - [Gemini-2.0-Flash](https://ai.google.dev/gemini-api/docs/openai) - LLM Responses
+- [Youtube_API](https://developers.google.com/youtube/v3/getting-started) - YouTube API
 - [React-Markdown](https://github.com/remarkjs/react-markdown) - Markdown Parsing
+- [Docker](https://www.docker.com/) - Containerization
+- [CI/CD](https://github.com/debsouryadatta/youtubetoblogs/actions) - Continuous Integration and Continuous Delivery
 
 ## Getting Started
 
@@ -61,10 +70,18 @@ To get a local copy up and running, follow these simple steps.
 3. Create a `.env.local` file and add your API keys
    ```sh
    GEMINI_API_KEY=your_api_key
+   YOUTUBE_API_KEY=your_api_key
    ```
 4. Start the development server
    ```sh
    npm run dev
+   ```
+
+### One Click With Docker Compose
+
+1. Build the Docker image & run
+   ```sh
+   docker-compose up --build -d
    ```
 
 ## Usage

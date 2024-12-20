@@ -14,3 +14,7 @@
 5. Add reverse proxy in the nginx.conf to redirect `youtubetoblogs.souryax.tech` to `localhost:3000`
 6. Add a ssl certificate for the domain `youtubetoblogs.souryax.tech` with certbot(FREE)
 7. (Optional): Add cicd with github actions, add the deploy.yml in .github/workflows, add the secret keys SSH_PRIVATE_KEY, SSH_HOST, USER_NAME to the PRODUCTION environment on github
+
+Other resources to look into:
+- souryax-course-generator README -> https://github.com/debsouryadatta/souryax-course-generator
+- harkirat dailycode ec2 vps class -> https://projects.100xdevs.com/tracks/g0AcDSPl74nk45ZZjRdU/aws-7 

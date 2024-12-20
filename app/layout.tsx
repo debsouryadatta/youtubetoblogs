@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'YouTube To Blogs',
-  description: 'Transform YouTube videos into beautiful blog posts',
+  description: 'Transform YouTube Videos into Engaging Blog Posts',
 };
 
 export default function RootLayout({
