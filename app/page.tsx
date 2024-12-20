@@ -15,39 +15,6 @@ import {
 import { CreateBlogPostForm } from '@/components/blog/create-blog-post-form';
 import { useGlobalStore } from '@/store/store';
 
-export const metadata = {
-  title: "YouTube To Blogs",
-  description: "Transform YouTube Videos into Engaging Blog Posts",
-  openGraph: {
-    type: "website",
-    title: "YouTube To Blogs",
-    description: "Transform YouTube Videos into Engaging Blog Posts",
-    url: "https://youtubetoblogs.souryax.tech",
-    siteName: "YouTube To Blogs",
-    images: [{
-      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1734703380/projects/Screenshot_2024-12-20_at_7.28.23_PM_puk8vi.png",
-      width: 1200,
-      height: 630,
-      alt: "YouTube To Blogs Preview Image",
-    }],
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "YouTube To Blogs",
-    description: "Transform YouTube Videos into Engaging Blog Posts",
-    site: "https://youtubetoblogs.souryax.tech",
-    images: [{
-      url: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1734703380/projects/Screenshot_2024-12-20_at_7.28.23_PM_puk8vi.png",
-      alt: "YouTube To Blogs Preview Image",
-    }],
-  },
-  icons: {
-    shortcut: "https://res.cloudinary.com/diyxwdtjd/image/upload/v1734703785/projects/youtube-icon_winfxv.jpg",
-  }
-};
-
-
 export default function Home() {
   const [open, setOpen] = useState(false);
   const { blogs, setBlogs } = useGlobalStore();
