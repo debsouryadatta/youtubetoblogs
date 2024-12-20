@@ -1,14 +1,14 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-    baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
+    apiKey: process.env.LLM_API_KEY,
+    baseURL: process.env.LLM_BASE_URL
 });
 
 export const responseFromGemini = async(subtitles: string, systemPrompt: string) => {
     try {
         const response = await openai.chat.completions.create({
-            model: "gemini-2.0-flash-exp",
+            model: "llama-3.3-70b-versatile",
             max_tokens: 5000,
             messages: [
                 { role: "system", content: systemPrompt },
