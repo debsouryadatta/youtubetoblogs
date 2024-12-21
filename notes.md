@@ -18,3 +18,8 @@
 Other resources to look into:
 - souryax-course-generator README -> https://github.com/debsouryadatta/souryax-course-generator
 - harkirat dailycode ec2 vps class -> https://projects.100xdevs.com/tracks/g0AcDSPl74nk45ZZjRdU/aws-7 
+
+
+
+### New features:
+- Implementing Arcjet Rate Limiting for security purposes

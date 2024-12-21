@@ -1,5 +1,6 @@
 "use server";
 
+import arcjet, { tokenBucket } from "@arcjet/next";
 import { BASE_PROMPT } from "@/lib/prompts";
 import { PROGRAMMING_TUTORIAL_SYSTEM_PROMPT } from "@/lib/prompts";
 import { ACADEMIC_LECTURE_SYSTEM_PROMPT } from "@/lib/prompts";
@@ -13,12 +14,20 @@ import { MATH_SCIENCE_SYSTEM_PROMPT } from "@/lib/prompts";
 import { PODCAST_SYSTEM_PROMPT } from "@/lib/prompts";
 import { ROADMAP_SYSTEM_PROMPT } from "@/lib/prompts";
 import { TECHNOLOGY_REVIEW_SYSTEM_PROMPT } from "@/lib/prompts";
-// import { responseFromGemini } from "@/lib/utils/langchain";
 import { responseFromGemini } from "@/lib/utils/openai";
-// import { getSubtitles } from "@/lib/utils/subtitles";
-// import { getTranscript } from "@/lib/utils/transcript";
 import { getSubtitles2 } from "@/lib/utils/subtitles2";
-import axios from "axios";
+
+const aj = arcjet({
+    key: process.env.ARCJET_KEY!,
+    rules: [
+        tokenBucket({
+            mode: "LIVE",
+            refillRate: 2,    // Refill 2 tokens per interval
+            interval: 60,      // Refill interval in seconds
+            capacity: 6,      // Maximum bucket size - twice since we are making two requests below
+        }),
+    ],
+});
 
 const getSystemPrompt = (videoType: string) => {
     switch (videoType) {
@@ -53,10 +62,18 @@ const getSystemPrompt = (videoType: string) => {
 
 export const getSubtitlesAction = async (videoId: string) => {
     try {
+        const decision = await aj.protect(
+            new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/`),
+            { requested: 1 } // Each request consumes 1 token);
+        );
+
+        if (decision.isDenied()) {
+            console.log("Rate limit exceeded. Please try again later.");
+            throw new Error('Rate limit exceeded. Please try again later.');
+        }
+
         console.log("Video ID: ", videoId);
-        // const subtitles = await getTranscript(videoId);
         const subtitles = await getSubtitles2(videoId);
-        // const subtitles = (await axios.get(`${process.env.BACKEND_URL}/hono/youtube-transcript/${videoId}`)).data;
         return subtitles;
     } catch (error) {
         throw error;
@@ -65,10 +82,19 @@ export const getSubtitlesAction = async (videoId: string) => {
 
 export const responseFromLlmAction = async (subtitles: string, videoType: string) => {
     try {
+        const decision = await aj.protect(
+            new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/`),
+            { requested: 1 }
+        );
+
+        if (decision.isDenied()) {
+            console.log("Rate limit exceeded. Please try again later.");
+            throw new Error('Rate limit exceeded. Please try again later.');
+        }
+
         const systemPrompt = getSystemPrompt(videoType) + BASE_PROMPT;
         console.log("System Prompt: ", systemPrompt);        
         const response = await responseFromGemini(subtitles, systemPrompt);
-        // console.log("Response from LLM2: ", response);
         return response;
     } catch (error) {
         throw error;

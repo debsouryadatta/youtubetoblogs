@@ -67,9 +67,13 @@ export function CreateBlogPostForm({ setOpen }: Props) {
       setBlogs([blogPost, ...blogs]);
       localStorage.setItem('blogs', JSON.stringify([blogPost, ...blogs]));
       toast.success('Blog post created successfully');
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      toast.error('Failed to create blog post');
+      if(error.message === 'Rate limit exceeded. Please try again later.') {
+        toast.error('Rate limit exceeded. Please try again later.');
+      } else {
+        toast.error('Failed to create blog post');
+      }
     } finally{
       setOpen(false);
       setLoading(false);

@@ -56,7 +56,7 @@ export function ChatDrawer({ postId }: { postId: string }) {
       setChatResponseLoading(true);
       console.log("Messages: ", post?.messages);
       
-      const response = await getChatResponseAction(input, post?.messages || [], post?.subtitles || "");
+      const response = await getChatResponseAction(input, post?.messages || [], post?.subtitles || "", postId);
       console.log("response from chat: ", response);
       const updatedBlogs = blogs.map((blog) => {
         if (blog.id === postId && response) {
@@ -74,9 +74,13 @@ export function ChatDrawer({ postId }: { postId: string }) {
       setBlogs(updatedBlogs);
       localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
       setInput("");
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      toast.error("Something went wrong");
+      if(error.message === "Rate limit exceeded. Please try again later.") {
+        toast.error("Rate limit exceeded. Please try again later.");
+      } else {
+        toast.error("Something went wrong");
+      }
     } finally {
       setChatResponseLoading(false);
     }

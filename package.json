@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@arcjet/next": "1.0.0-alpha.34",
     "@googleapis/youtube": "^20.0.0",
     "@hookform/resolvers": "^3.9.1",
     "@langchain/core": "^0.3.24",
