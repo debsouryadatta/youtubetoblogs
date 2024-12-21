@@ -19,6 +19,7 @@ import { getSubtitles2 } from "@/lib/utils/subtitles2";
 
 const aj = arcjet({
     key: process.env.ARCJET_KEY!,
+    characteristics: ["ip"],
     rules: [
         tokenBucket({
             mode: "LIVE",
@@ -64,7 +65,7 @@ export const getSubtitlesAction = async (videoId: string) => {
     try {
         const decision = await aj.protect(
             new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/`),
-            { requested: 1 } // Each request consumes 1 token);
+            { requested: 1, ip: true } // Each request consumes 1 token
         );
 
         if (decision.isDenied()) {
@@ -84,7 +85,7 @@ export const responseFromLlmAction = async (subtitles: string, videoType: string
     try {
         const decision = await aj.protect(
             new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/`),
-            { requested: 1 }
+            { requested: 1, ip: true }
         );
 
         if (decision.isDenied()) {

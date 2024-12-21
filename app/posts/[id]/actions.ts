@@ -7,6 +7,7 @@ import { chatResponseFromGemini } from "@/lib/utils/openaiChat";
 
 const aj = arcjet({
   key: process.env.ARCJET_KEY!,
+  characteristics: ['ip'],
   rules: [
     tokenBucket({
       mode: "LIVE",
@@ -19,7 +20,7 @@ const aj = arcjet({
 
 export const getChatResponseAction = async (input: string, messages: Message[], subtitles: string, postId: string) => {
     try {
-        const decision = await aj.protect(new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/posts/${postId}`), { requested: 1 })  // Each request consumes 1 token);
+        const decision = await aj.protect(new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/posts/${postId}`), { requested: 1, ip: true })  // Each request consumes 1 token);
         
         if (decision.isDenied()) {
             console.log("Rate limit exceeded. Please try again later.");
