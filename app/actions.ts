@@ -1,6 +1,6 @@
 "use server";
 
-import arcjet, { tokenBucket } from "@arcjet/next";
+import arcjet, { tokenBucket, request } from "@arcjet/next";
 import { BASE_PROMPT } from "@/lib/prompts";
 import { PROGRAMMING_TUTORIAL_SYSTEM_PROMPT } from "@/lib/prompts";
 import { ACADEMIC_LECTURE_SYSTEM_PROMPT } from "@/lib/prompts";
@@ -63,10 +63,8 @@ const getSystemPrompt = (videoType: string) => {
 
 export const getSubtitlesAction = async (videoId: string) => {
     try {
-        const decision = await aj.protect(
-            new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/`),
-            { requested: 1 } // Each request consumes 1 token
-        );
+        const req = await request();
+        const decision = await aj.protect(req, { requested: 1 })  // Each request consumes 1 token);
 
         if (decision.isDenied()) {
             console.log("Rate limit exceeded. Please try again later.");
@@ -83,11 +81,8 @@ export const getSubtitlesAction = async (videoId: string) => {
 
 export const responseFromLlmAction = async (subtitles: string, videoType: string) => {
     try {
-        const decision = await aj.protect(
-            new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/`),
-            { requested: 1 }
-        );
-
+        const req = await request();
+        const decision = await aj.protect(req, { requested: 1 })  // Each request consumes 1 token);
         if (decision.isDenied()) {
             console.log("Rate limit exceeded. Please try again later.");
             throw new Error('Rate limit exceeded. Please try again later.');

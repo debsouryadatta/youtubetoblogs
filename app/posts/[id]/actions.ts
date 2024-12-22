@@ -1,9 +1,10 @@
 "use server";
 
-import arcjet, { tokenBucket } from "@arcjet/next";
+import arcjet, { tokenBucket, request } from "@arcjet/next";
 import { CHAT_SYSTEM_PROMPT } from "@/lib/prompts/chatPrompt";
 import { Message } from "@/lib/types";
 import { chatResponseFromGemini } from "@/lib/utils/openaiChat";
+// import ip from "@arcjet/ip";
 
 const aj = arcjet({
   key: process.env.ARCJET_KEY!,
@@ -20,7 +21,12 @@ const aj = arcjet({
 
 export const getChatResponseAction = async (input: string, messages: Message[], subtitles: string, postId: string) => {
     try {
-        const decision = await aj.protect(new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/posts/${postId}`), { requested: 1 })  // Each request consumes 1 token);
+        // const req = new Request(`${process.env.NEXT_PUBLIC_SITE_URL}/posts/${postId}`)
+        const req = await request();
+        // @ts-ignore
+        // const userIp = ip(req);
+        // console.log("User IP: ", userIp);
+        const decision = await aj.protect(req, { requested: 1 })  // Each request consumes 1 token);
         
         if (decision.isDenied()) {
             console.log("Rate limit exceeded. Please try again later.");
