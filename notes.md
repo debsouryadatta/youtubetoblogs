@@ -23,3 +23,4 @@ Other resources to look into:
 
 ### New features:
 - Implementing Arcjet Rate Limiting for security purposes
+- Export as markdown file added, modified code blocks with code wrap

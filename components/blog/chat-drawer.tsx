@@ -175,7 +175,7 @@ export function ChatDrawer({ postId }: { postId: string }) {
                   )}
                 >
                   <div className={cn(
-                    "text-sm prose dark:prose-invert max-w-none",
+                    "text-sm prose dark:prose-invert max-w-none [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:overflow-x-auto",
                     message.role === "user" && "text-primary-foreground prose-headings:text-primary-foreground prose-p:text-primary-foreground prose-strong:text-primary-foreground prose-em:text-primary-foreground prose-code:text-primary-foreground prose-pre:text-primary-foreground"
                   )}>
                     <ReactMarkdown

@@ -46,7 +46,7 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
   }, []);
 
   return (
-    <article className="prose prose-neutral dark:prose-invert max-w-none" ref={mermaidRef}>
+    <article className="prose prose-neutral dark:prose-invert max-w-none [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:overflow-x-auto" ref={mermaidRef}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex, rehypeRaw]}

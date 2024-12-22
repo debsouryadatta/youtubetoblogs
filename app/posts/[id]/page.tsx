@@ -1,7 +1,7 @@
 "use client";
 
 import { notFound } from 'next/navigation';
-import { ArrowLeft, CalendarIcon, YoutubeIcon } from 'lucide-react';
+import { ArrowLeft, CalendarIcon, YoutubeIcon, Download } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -13,6 +13,12 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useGlobalStore } from '@/store/store';
 import { ChatDrawer } from '@/components/blog/chat-drawer';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
   const { blogs } = useGlobalStore();
@@ -69,6 +75,34 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
     }
   };
 
+  const handleExportMarkdown = () => {
+    if (!post) return;
+    
+    // Create markdown content
+    const markdownContent = `# ${post.title}
+Created on: ${new Date(post.createdAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})}
+
+YouTube URL: ${post.youtubeUrl}
+
+${post.content}
+`;
+
+    // Create blob and download
+    const blob = new Blob([markdownContent], { type: 'text/markdown' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${post.title}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -78,14 +112,27 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
             Back to Home
           </Button>
         </Link>
-        <Button onClick={handleExportPdf} className="mb-8">
-          Export as PDF
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="mb-8">
+              <Download className="mr-2 h-4 w-4" />
+              Export
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={handleExportPdf}>
+              Export as PDF
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportMarkdown}>
+              Export as Markdown
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <div className="space-y-8">
           <div>
             <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-            <div className="flex items-center gap-4 text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="h-4 w-4" />
                 <time dateTime={post.createdAt}>
@@ -97,9 +144,12 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                 </time>
               </div>
               <Separator orientation="vertical" className="h-4" />
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2">
                 <YoutubeIcon className="h-4 w-4 text-red-600" />
                 <span className="whitespace-nowrap">YouTube Blog</span>
+              </div>
+              <Separator orientation="vertical" className="h-4" />
+              <div className="flex flex-wrap items-center gap-2">
                 <ChatDrawer postId={post.id} />
               </div>
             </div>
