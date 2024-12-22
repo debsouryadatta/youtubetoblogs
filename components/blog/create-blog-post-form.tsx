@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { getSubtitlesAction, responseFromLlmAction } from '@/app/actions';
 import { toast } from 'sonner';
 import { nanoid } from 'nanoid'
@@ -24,7 +25,8 @@ import { Loader2 } from 'lucide-react';
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   youtubeUrl: z.string().url('Please enter a valid URL'),
-  videoType: z.string().min(1, 'Video type is required'),
+  videoType: z.string().optional(),
+  isShort: z.boolean().default(false),
 });
 
 type Props = {
@@ -32,7 +34,7 @@ type Props = {
 };
 
 export function CreateBlogPostForm({ setOpen }: Props) {
-  const {blogs, setBlogs} = useGlobalStore();
+  const { blogs, setBlogs } = useGlobalStore();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,6 +43,7 @@ export function CreateBlogPostForm({ setOpen }: Props) {
       title: '',
       youtubeUrl: '',
       videoType: '',
+      isShort: false,
     },
   });
 
@@ -48,18 +51,28 @@ export function CreateBlogPostForm({ setOpen }: Props) {
     try {
       setLoading(true);
       console.log(values);
-      const { title, youtubeUrl, videoType } = values;
+      const { title, youtubeUrl, videoType, isShort } = values;
       const videoId = extractVideoId(youtubeUrl);
+      console.log("isShort: ", isShort);
+      console.log("videoId: ", videoId);
+
       const subtitles = await getSubtitlesAction(videoId!);
       console.log("Subtitles: ", subtitles);
-      const responseFromLlm = await responseFromLlmAction(subtitles!, videoType);
+
+      let responseFromLlm: string | null = "";
+      if (isShort) {
+        responseFromLlm = await responseFromLlmAction(subtitles!, 'ytshorts');
+      } else {
+        responseFromLlm = await responseFromLlmAction(subtitles!, videoType || 'general');
+      }
+
       console.log("Response from LLM: ", responseFromLlm);
       const blogPost = {
         id: nanoid(),
         title,
         content: responseFromLlm!,
         youtubeUrl,
-        videoType,
+        videoType: isShort? 'ytshorts' : videoType || 'general',
         subtitles: subtitles!,
         messages: [],
         createdAt: new Date().toISOString(),
@@ -69,12 +82,12 @@ export function CreateBlogPostForm({ setOpen }: Props) {
       toast.success('Blog post created successfully');
     } catch (error: any) {
       console.log(error);
-      if(error.message === 'Rate limit exceeded. Please try again later.') {
+      if (error.message === 'Rate limit exceeded. Please try again later.') {
         toast.error('Rate limit exceeded. Please try again later.');
       } else {
         toast.error('Failed to create blog post');
       }
-    } finally{
+    } finally {
       setOpen(false);
       setLoading(false);
     }
@@ -87,6 +100,8 @@ export function CreateBlogPostForm({ setOpen }: Props) {
       return params.get('v');
     } else if (url.includes('youtu.be/')) {
       return url.split('youtu.be/')[1]?.split('?')[0];
+    } else if (url.includes('/shorts/')) {
+      return url.split('/shorts/')[1]?.split('?')[0];
     }
     return null;
   }
@@ -120,7 +135,31 @@ export function CreateBlogPostForm({ setOpen }: Props) {
             </FormItem>
           )}
         />
+
         <FormField
+          control={form.control}
+          name="isShort"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-center gap-4 rounded-lg p-4">
+              <div className={`text-sm font-medium mt-3 ${field.value ? 'text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-gray-100'}`}>
+                YouTube Video
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-gray-900 dark:data-[state=checked]:bg-gray-600"
+                />
+              </FormControl>
+              <div className={`text-sm font-medium ${!field.value ? 'text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-gray-100'}`}>
+                YouTube Shorts
+              </div>
+            </FormItem>
+          )}
+        />
+
+        {!form.getValues('isShort') && (
+          <FormField
           control={form.control}
           name="videoType"
           render={({ field }) => (
@@ -151,6 +190,9 @@ export function CreateBlogPostForm({ setOpen }: Props) {
             </FormItem>
           )}
         />
+        )}
+
+
         <div className="w-full">
           <Button type="submit" className="w-full bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-800 dark:to-gray-600 text-white hover:from-gray-800 hover:to-gray-600 dark:hover:from-gray-700 dark:hover:to-gray-500 transition-all duration-300" disabled={loading}>
             {loading ? (

@@ -11,6 +11,7 @@ export * from "./technology";
 export * from "./guidance";
 export * from "./podcast";
 export * from "./roadmap";
+export * from "./shorts";
 
 
 

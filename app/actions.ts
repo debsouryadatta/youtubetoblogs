@@ -2,6 +2,7 @@
 
 import arcjet, { tokenBucket, request } from "@arcjet/next";
 import { BASE_PROMPT } from "@/lib/prompts";
+import { YT_SHORTS_SYSTEM_PROMPT } from "@/lib/prompts";
 import { PROGRAMMING_TUTORIAL_SYSTEM_PROMPT } from "@/lib/prompts";
 import { ACADEMIC_LECTURE_SYSTEM_PROMPT } from "@/lib/prompts";
 import { BUSINESS_FINANCE_SYSTEM_PROMPT } from "@/lib/prompts";
@@ -56,6 +57,8 @@ const getSystemPrompt = (videoType: string) => {
             return ROADMAP_SYSTEM_PROMPT;
         case 'technology':
             return TECHNOLOGY_REVIEW_SYSTEM_PROMPT;
+        case 'ytshorts':
+            return YT_SHORTS_SYSTEM_PROMPT;
         default:
             return GENERAL_SYSTEM_PROMPT;
     }
