@@ -49,7 +49,12 @@ export function BlogPostContent({ content, fontStyle }: BlogPostContentProps) {
   }, []);
 
   return (
-    <article className={`prose prose-neutral dark:prose-invert max-w-none [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:overflow-x-auto font-${fontStyle}`} ref={mermaidRef}>
+    <article className={`prose prose-neutral dark:prose-invert max-w-none [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:overflow-x-auto ${
+      fontStyle === 'Roboto' ? 'font-Roboto' :
+      fontStyle === 'Ubuntu' ? 'font-Ubuntu' :
+      fontStyle === 'Outfit' ? 'font-Outfit' :
+      fontStyle === 'Itim' ? 'font-Itim' : 'font-Roboto'
+    }`} ref={mermaidRef}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex, rehypeRaw]}
