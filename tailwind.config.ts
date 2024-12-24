@@ -9,6 +9,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        Roboto: ['Roboto', 'sans-serif'],
+        Luckiest: ['Luckiest Guy', 'sans-serif'],
+        Ubuntu: ['Ubuntu', 'sans-serif'],
+        Outfit: ['Outfit', 'sans-serif'],
+        Itim: ['Itim', 'sans-serif'],
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

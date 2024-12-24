@@ -31,7 +31,7 @@ export default function AboutPage() {
                 Versatile Video Support
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Convert any YouTube video into a detailed blog post, supporting various content styles and video types with intelligent subtitle extraction.
+                Convert any YouTube video or Short into a detailed blog post, supporting various content styles with intelligent subtitle extraction.
               </p>
             </div>
 
@@ -41,7 +41,7 @@ export default function AboutPage() {
                 AI-Powered Conversion
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Utilizing advanced AI technology for intelligent content formatting and structure, powered by OpenAI and Gemini-2.0-Flash.
+                Utilizing advanced AI technology with secure rate limiting for intelligent content formatting and structure.
               </p>
             </div>
 
@@ -51,7 +51,7 @@ export default function AboutPage() {
                 Export & Storage
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Export your blog posts as PDF files and enjoy secure local storage with no server sharing or login required.
+                Export your blog posts as PDF or markdown files with code wrap support. Import and export data from localStorage as JSON for backup.
               </p>
             </div>
           </div>
@@ -62,9 +62,9 @@ export default function AboutPage() {
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
               <div className="p-6 backdrop-blur-lg bg-white/50 dark:bg-white/5 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Interactive Chat Interface</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Interactive Features</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Engage with your blog content through an interactive chat interface with convenient clear chat functionality.
+                  Engage with your blog content through an interactive chat interface, customize fonts, and organize posts with categories.
                 </p>
               </div>
               <div className="p-6 backdrop-blur-lg bg-white/50 dark:bg-white/5 rounded-lg border border-gray-200/50 dark:border-gray-700/50 shadow-sm">

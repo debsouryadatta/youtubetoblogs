@@ -11,10 +11,13 @@ import mermaid from 'mermaid';
 
 interface BlogPostContentProps {
   content: string;
+  fontStyle: string;
 }
 
-export function BlogPostContent({ content }: BlogPostContentProps) {
+export function BlogPostContent({ content, fontStyle }: BlogPostContentProps) {
   const mermaidRef = useRef<HTMLElement>(null);
+  console.log("fontStyle: ", fontStyle);
+  
 
   useEffect(() => {
     mermaid.initialize({ startOnLoad: false });
@@ -46,7 +49,7 @@ export function BlogPostContent({ content }: BlogPostContentProps) {
   }, []);
 
   return (
-    <article className="prose prose-neutral dark:prose-invert max-w-none [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:overflow-x-auto" ref={mermaidRef}>
+    <article className={`prose prose-neutral dark:prose-invert max-w-none [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:overflow-x-auto font-${fontStyle}`} ref={mermaidRef}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex, rehypeRaw]}

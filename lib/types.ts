@@ -12,6 +12,7 @@ export interface BlogPost {
   subtitles: string;
   messages: Message[];
   createdAt: string;
+  fontStyle?: string;
 }
 
 export interface CreateBlogPostData {

@@ -6,6 +6,7 @@ import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { Toaster } from "@/components/ui/sonner"
 import Link from 'next/link';
 import { Analytics } from '@/components/Analytics';
+import { Settings2 } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -74,6 +75,9 @@ export default function RootLayout({
                     </Link>
                     <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
                       About
+                    </Link>
+                    <Link href="/settings" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                      <Settings2 className="h-5 w-5" />
                     </Link>
                   </nav>
                   <div className="h-4 w-[1px] bg-border" />

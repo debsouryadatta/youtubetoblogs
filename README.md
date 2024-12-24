@@ -27,12 +27,16 @@ YouTube to Blogs is an AI-powered web application that converts YouTube videos i
 ## Features
 
 - **YouTube to Guided Blogs**: Transform YouTube videos into detailed, structured blog posts
-- **Versatile Video Support**: Enhanced blog creation from various video types and content styles
-- **PDF Export**: Easily export your generated blog posts as PDF files
+- **Versatile Video Support**: Enhanced blog creation from various video types including YouTube Shorts
+- **Export Options**: Export your generated blog posts as PDF files or markdown files with code wrap support
 - **Local Storage**: All data saved locally, ensuring privacy with no server sharing or login required
 - **Interactive Chat**: Engage with your blog content through a chat interface, with a convenient clear chat feature
 - **AI-Powered Conversion**: Intelligent subtitle extraction and content formatting
 - **Responsive Design**: Seamless experience across desktop and mobile devices
+- **Data Management**: Import and export your data from and to the localStorage as JSON files
+- **Categorized Posts**: Organize your blog posts with categories in the post gallery
+- **Customization**: Change fonts to match your preferred reading style
+- **Enhanced Security**: Implemented Arcjet Rate Limiting for improved security
 
 ### Built With
 
@@ -44,6 +48,7 @@ YouTube to Blogs is an AI-powered web application that converts YouTube videos i
 - [Gemini-2.0-Flash](https://ai.google.dev/gemini-api/docs/openai) - LLM Responses
 - [Youtube_API](https://developers.google.com/youtube/v3/getting-started) - YouTube API
 - [React-Markdown](https://github.com/remarkjs/react-markdown) - Markdown Parsing
+- [Arcjet](https://arcjet.dev/) - Rate Limiting
 - [Docker](https://www.docker.com/) - Containerization
 - [CI/CD](https://github.com/debsouryadatta/youtubetoblogs/actions) - Continuous Integration and Continuous Delivery
 
