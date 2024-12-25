@@ -1,9 +1,10 @@
 "use server";
 
 import arcjet, { tokenBucket, request } from "@arcjet/next";
-import { CHAT_SYSTEM_PROMPT } from "@/lib/prompts/chatPrompt";
+import { CHAT_SYSTEM_PROMPT, CHANGE_LANG_SYSTEM_PROMPT } from "@/lib/prompts";
 import { Message } from "@/lib/types";
 import { chatResponseFromGemini } from "@/lib/utils/openaiChat";
+import { changeLangWithGemini } from "@/lib/utils/openaiLang";
 // import ip from "@arcjet/ip";
 
 const aj = arcjet({
@@ -39,4 +40,14 @@ export const getChatResponseAction = async (input: string, messages: Message[], 
     } catch (error) {
         throw error;
     }
+}
+
+export const changeLangAction = async (blogContent: string, language: string) => {
+  try {
+    const systemPrompt = CHANGE_LANG_SYSTEM_PROMPT;
+    const response = await changeLangWithGemini(blogContent, language, systemPrompt);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 }

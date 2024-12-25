@@ -10,9 +10,9 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
-import { Loader2, SendHorizontal } from "lucide-react"
+import { Loader2, SendHorizontal, Copy, BookmarkPlus } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Message } from "@/lib/types"
+import { BlogPost, Message } from "@/lib/types"
 import { toast } from "sonner"
 import { useState, useRef, useEffect } from "react"
 import { getChatResponseAction } from "@/app/posts/[id]/actions"
@@ -23,13 +23,103 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import 'katex/dist/katex.css';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
+import { format } from "date-fns"
 
-export function ChatDrawer({ postId }: { postId: string }) {
+interface AddToNotesDialogProps {
+  message: Message;
+  postId: string;
+  triggerId: string;
+  post: BlogPost;
+  setPost: (post: BlogPost) => void;
+}
+
+function AddToNotesDialog({ message, postId, triggerId, post, setPost }: AddToNotesDialogProps) {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const { blogs, setBlogs } = useGlobalStore();
+
+  const handleAddToNotes = () => {
+    if (!title.trim()) return;
+
+    try {
+      const note = {
+        id: Date.now().toString(),
+        title: title.trim(),
+        date: format(new Date(), "yyyy-MM-dd"),
+        content: message.content
+      };
+
+      const updatedBlogs = blogs.map((blog) => {
+        if (blog.id === postId) {
+          return {
+            ...blog,
+            notes: [...blog.notes!, note],
+          };
+        }
+        return blog;
+      });
+      setBlogs(updatedBlogs);
+      localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+      const foundBlog = updatedBlogs.find((blog) => blog.id === postId);
+      if (foundBlog) {
+        setPost(foundBlog);
+      }
+
+      setOpen(false);
+      setTitle("");
+      toast.success("Added to notes successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add to notes");
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button id={triggerId} className="hidden" />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add to Notes</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Input
+              placeholder="Enter note title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Textarea
+              readOnly
+              value={message.content}
+              className="h-[200px] resize-none"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button onClick={handleAddToNotes}>Add to Notes</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function ChatDrawer({ postId, post, setPost }: { postId: string, post: BlogPost, setPost: (post: BlogPost) => void }) {
   const [input, setInput] = useState("");
   const [chatResponseLoading, setChatResponseLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { blogs, setBlogs } = useGlobalStore();
-  const post = blogs.find((p) => p.id === postId);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -73,6 +163,10 @@ export function ChatDrawer({ postId }: { postId: string }) {
       });
       setBlogs(updatedBlogs);
       localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+      const foundBlog = updatedBlogs.find((blog) => blog.id === postId);
+      if (foundBlog) {
+        setPost(foundBlog);
+      }
       setInput("");
     } catch (error: any) {
       console.log(error);
@@ -105,6 +199,10 @@ export function ChatDrawer({ postId }: { postId: string }) {
     });
     setBlogs(updatedBlogs);
     localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+    const foundBlog = updatedBlogs.find((blog) => blog.id === postId);
+    if (foundBlog) {
+      setPost(foundBlog);
+    }
     toast.success("Chat cleared successfully");
   };
 
@@ -152,38 +250,81 @@ export function ChatDrawer({ postId }: { postId: string }) {
               <div
                 key={index}
                 className={cn(
-                  "flex items-start gap-3",
+                  "flex items-start gap-3 group",
                   message.role === "user" ? "flex-row-reverse" : "flex-row"
                 )}
               >
                 <Avatar className="h-8 w-8">
                   {message.role === "assistant" ? (
                     <AvatarImage src="https://res.cloudinary.com/diyxwdtjd/image/upload/v1734098503/projects/aiverse-logo_mbtjg8.png" alt="AI" />
+                  ) : message.role === "user" ? (
+                    <AvatarImage src="https://github.com/shadcn.png" alt="AI" />
                   ) : (
-                    <AvatarImage src="https://github.com/shadcn.png" alt="User" />
+                    <AvatarFallback>U</AvatarFallback>
                   )}
-                  <AvatarFallback>
-                    {message.role === "assistant" ? "AI" : "U"}
-                  </AvatarFallback>
                 </Avatar>
-                <div
-                  className={cn(
-                    "flex flex-col rounded-lg p-4 max-w-[80%]",
-                    message.role === "user"
-                      ? "bg-primary"
-                      : "bg-muted"
-                  )}
-                >
+                <div className={cn(
+                  "flex flex-col flex-1 gap-2",
+                  message.role === "user" ? "items-end" : "items-start"
+                )}>
                   <div className={cn(
-                    "text-sm prose dark:prose-invert max-w-none [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:overflow-x-auto",
-                    message.role === "user" && "text-primary-foreground prose-headings:text-primary-foreground prose-p:text-primary-foreground prose-strong:text-primary-foreground prose-em:text-primary-foreground prose-code:text-primary-foreground prose-pre:text-primary-foreground"
+                    "rounded-lg px-3 py-2",
+                    message.role === "assistant" ? "bg-muted" : "bg-primary",
+                    message.role === "user" ? "max-w-[85%]" : "max-w-[90%]",
                   )}>
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm, remarkMath]}
                       rehypePlugins={[rehypeKatex, rehypeRaw]}
+                      className={cn(
+                        "prose prose-sm dark:prose-invert max-w-none",
+                        message.role === "user" ? "text-white dark:text-black" : "text-black dark:text-white")}
+                      components={{
+                        p: ({ node, children, ...props }) => {
+                          const hasPre = (Array.isArray(children) 
+                            ? children.some((child: any) => child?.type === 'pre')
+                            : false);
+                          
+                          return hasPre ? <>{children}</> : <div {...props}>{children}</div>;
+                        },
+                        pre: ({ node, ...props }) => <pre className="whitespace-pre-wrap" {...props} />
+                      }}
                     >
                       {message.content}
                     </ReactMarkdown>
+                  </div>
+                  <div className={cn(
+                    "flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity",
+                    message.role === "user" ? "flex-row-reverse" : "flex-row"
+                  )}>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="h-8 text-xs font-normal px-1 sm:px-3"
+                      onClick={() => {
+                        navigator.clipboard.writeText(message.content);
+                        toast.success("Copied to clipboard");
+                      }}
+                    >
+                      <Copy className="h-3 w-3 sm:mr-1" />
+                      <span className="hidden sm:inline">Copy</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 text-xs font-normal px-1 sm:px-3"
+                      onClick={() => {
+                        const dialogTrigger = document.getElementById(`note-dialog-${index}`);
+                        if (dialogTrigger) {
+                          (dialogTrigger as HTMLButtonElement).click();
+                        }
+                      }}
+                    >
+                      <BookmarkPlus className="h-3 w-3 sm:mr-1" />
+                      <span className="hidden sm:inline">Add to Notes</span>
+                    </Button>
+                    <div className="hidden">
+                      <AddToNotesDialog message={message} postId={postId} triggerId={`note-dialog-${index}`} post={post} setPost={setPost} />
+                    </div>
                   </div>
                 </div>
               </div>

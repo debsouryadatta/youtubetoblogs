@@ -67,16 +67,32 @@ export function BlogPostContent({ content, fontStyle }: BlogPostContentProps) {
               alt={props.alt || ''}
             />
           ),
-          code: ({ node, className, children, ...props }) => (
-            <pre className="bg-muted rounded-lg overflow-x-auto text-black dark:text-white ">
-              <code
-                className={`${className} block pr-4`}
-                {...props}
-              >
-                {children}
-              </code>
-            </pre>
-          ),
+          p: ({ node, children, ...props }) => {
+            // Check if children contains a pre element
+            const hasPreTag = React.Children.toArray(children).some(
+              (child) => React.isValidElement(child) && child.type === 'pre'
+            );
+            // If there's a pre tag, render children directly
+            if (hasPreTag) {
+              return <>{children}</>;
+            }
+            // Otherwise render as paragraph
+            return <p {...props}>{children}</p>;
+          },
+          code: ({ node, className, children, ...props }) => {
+            // If this is a code block (has className), wrap in pre
+            if (className) {
+              return (
+                <pre className="bg-muted rounded-lg overflow-x-auto text-black dark:text-white">
+                  <code className={`${className} block pr-4`} {...props}>
+                    {children}
+                  </code>
+                </pre>
+              );
+            }
+            // If this is inline code, just return code element
+            return <code className={className} {...props}>{children}</code>;
+          },
         }}
       >
         {content}

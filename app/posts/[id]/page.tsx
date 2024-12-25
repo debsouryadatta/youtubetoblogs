@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getYoutubeVideoId } from "@/lib/utils/subtitles";
 import { BlogPostContent } from "@/components/blog/blog-post-content";
+import { TabsSection } from "@/components/blog/tabs-section";
 import { useEffect, useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
@@ -39,7 +40,6 @@ export default function BlogPostPage() {
     setVideoId(videoId);
     setPost(post);
   }, [params.id]);
-
 
   const handleExportPdf = async () => {
     if (!contentRef.current) return;
@@ -114,8 +114,15 @@ ${post.content}
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-1/2 -right-1/2 w-96 h-96 bg-gradient-to-b from-purple-100/30 to-cyan-100/30 dark:from-purple-900/20 dark:to-cyan-900/20 blur-3xl rounded-full" />
+        <div className="absolute -bottom-1/2 -left-1/2 w-96 h-96 bg-gradient-to-t from-blue-100/30 to-pink-100/30 dark:from-blue-900/20 dark:to-pink-900/20 blur-3xl rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      </div>
+
+      <div className="container relative mx-auto px-4 py-8 max-w-4xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -160,7 +167,7 @@ ${post.content}
               </div>
               <Separator orientation="vertical" className="h-4" />
               <div className="flex flex-wrap items-center gap-2">
-                <ChatDrawer postId={post?.id!} />
+                <ChatDrawer postId={post?.id!} post={post!} setPost={setPost} />
               </div>
               <Separator orientation="vertical" className="h-4" />
               <div className="flex flex-wrap items-center gap-2">
@@ -182,13 +189,14 @@ ${post.content}
           )}
 
           <Card className="p-8" ref={contentRef}>
-            {/* {
-              post?.content && post.fontStyle && (
-                <BlogPostContent content={post.content} fontStyle={post.fontStyle} />
-              )
-            } */}
             <BlogPostContent content={post?.content!} fontStyle={post?.fontStyle!} />
           </Card>
+
+          {/* Tabs Section */}
+          <div className="mt-16">
+            <Separator className="my-4" />
+            <TabsSection post={post!} setPost={setPost} />
+          </div>
         </div>
       </div>
     </div>

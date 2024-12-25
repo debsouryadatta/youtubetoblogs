@@ -3,6 +3,13 @@ export interface Message {
   content: string;
 }
 
+export interface Note {
+  id: string;
+  title: string;
+  date: string;
+  content: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -13,6 +20,8 @@ export interface BlogPost {
   messages: Message[];
   createdAt: string;
   fontStyle?: string;
+  language?: string;
+  notes?: Note[];
 }
 
 export interface CreateBlogPostData {

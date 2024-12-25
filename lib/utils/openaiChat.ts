@@ -10,7 +10,7 @@ export const chatResponseFromGemini = async(input: string, messages: Message[], 
     try {
         const response = await openai.chat.completions.create({
             model: "gemini-2.0-flash-exp",
-            max_tokens: 5000,
+            // max_tokens: 5000,
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: subtitles },

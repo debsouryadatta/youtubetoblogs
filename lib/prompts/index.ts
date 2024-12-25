@@ -11,8 +11,9 @@ export * from "./technology";
 export * from "./guidance";
 export * from "./podcast";
 export * from "./roadmap";
+export * from "./chatPrompt";
 export * from "./shorts";
-
+export * from "./changeLangPrompt";
 
 
 
