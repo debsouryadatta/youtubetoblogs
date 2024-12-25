@@ -28,6 +28,13 @@ import {
 import { useGlobalStore } from "@/store/store";
 import { BlogPost } from "@/lib/types";
 import { toast } from "sonner";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import 'katex/dist/katex.css';
+import { CodeBlock } from "@/components/ui/code-block";
 
 interface Note {
   id: string;
@@ -287,7 +294,27 @@ export function NotesSection({post, setPost}: {post: BlogPost, setPost: (post: B
                     <span>{note.date}</span>
                   </div>
                 </div>
-                <p className="text-sm leading-relaxed">{note.content}</p>
+                <div className="space-y-2">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm, remarkMath]}
+                    rehypePlugins={[rehypeKatex, rehypeRaw]}
+                    className="prose prose-sm dark:prose-invert max-w-none"
+                    components={{
+                      p: ({ node, children, ...props }) => {
+                        const hasPre = (Array.isArray(children) 
+                          ? children.some((child: any) => child?.type === 'pre')
+                          : false);
+                        
+                        return hasPre ? <>{children}</> : <div {...props}>{children}</div>;
+                      },
+                      pre: ({ node, children, ...props }) => (
+                        <CodeBlock node={node} {...props}>{children}</CodeBlock>
+                      )
+                    }}
+                  >
+                    {note.content}
+                  </ReactMarkdown>
+                </div>
               </div>
             </DialogContent>
           </Dialog>

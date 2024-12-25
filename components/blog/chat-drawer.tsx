@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { format } from "date-fns"
+import { CodeBlock } from "@/components/ui/code-block";
 
 interface AddToNotesDialogProps {
   message: Message;
@@ -286,7 +287,9 @@ export function ChatDrawer({ postId, post, setPost }: { postId: string, post: Bl
                           
                           return hasPre ? <>{children}</> : <div {...props}>{children}</div>;
                         },
-                        pre: ({ node, ...props }) => <pre className="whitespace-pre-wrap" {...props} />
+                        pre: ({ node, children, ...props }) => (
+                          <CodeBlock node={node} {...props}>{children}</CodeBlock>
+                        )
                       }}
                     >
                       {message.content}

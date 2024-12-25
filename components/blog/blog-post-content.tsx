@@ -8,6 +8,7 @@ import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import 'katex/dist/katex.css';
 import mermaid from 'mermaid';
+import { CodeBlock } from "@/components/ui/code-block";
 
 interface BlogPostContentProps {
   content: string;
@@ -58,7 +59,18 @@ export function BlogPostContent({ content, fontStyle }: BlogPostContentProps) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex, rehypeRaw]}
+        className="prose prose-sm dark:prose-invert max-w-none"
         components={{
+          p: ({ node, children, ...props }) => {
+            const hasPre = (Array.isArray(children) 
+              ? children.some((child: any) => child?.type === 'pre')
+              : false);
+            
+            return hasPre ? <>{children}</> : <div {...props}>{children}</div>;
+          },
+          pre: ({ node, children, ...props }) => (
+            <CodeBlock node={node} {...props}>{children}</CodeBlock>
+          ),
           img: ({ node, ...props }) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -67,32 +79,6 @@ export function BlogPostContent({ content, fontStyle }: BlogPostContentProps) {
               alt={props.alt || ''}
             />
           ),
-          p: ({ node, children, ...props }) => {
-            // Check if children contains a pre element
-            const hasPreTag = React.Children.toArray(children).some(
-              (child) => React.isValidElement(child) && child.type === 'pre'
-            );
-            // If there's a pre tag, render children directly
-            if (hasPreTag) {
-              return <>{children}</>;
-            }
-            // Otherwise render as paragraph
-            return <p {...props}>{children}</p>;
-          },
-          code: ({ node, className, children, ...props }) => {
-            // If this is a code block (has className), wrap in pre
-            if (className) {
-              return (
-                <pre className="bg-muted rounded-lg overflow-x-auto text-black dark:text-white">
-                  <code className={`${className} block pr-4`} {...props}>
-                    {children}
-                  </code>
-                </pre>
-              );
-            }
-            // If this is inline code, just return code element
-            return <code className={className} {...props}>{children}</code>;
-          },
         }}
       >
         {content}
