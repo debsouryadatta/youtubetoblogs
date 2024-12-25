@@ -1,7 +1,7 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import { ArrowLeft, CalendarIcon, YoutubeIcon, Download } from "lucide-react";
+import { ArrowLeft, CalendarIcon, YoutubeIcon, Download, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -26,20 +26,44 @@ import { BlogPost } from "@/lib/types";
 
 export default function BlogPostPage() {
   const params = useParams();
-  const { blogs } = useGlobalStore();
+  const { blogs, setBlogs } = useGlobalStore();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [videoId, setVideoId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const post = blogs.find((p) => p.id === params.id);
-    if (!post) {
-      notFound();
+    const storedBlogs = localStorage.getItem('blogs');
+    if (storedBlogs) {
+      setBlogs(JSON.parse(storedBlogs));
     }
-    const videoId = getYoutubeVideoId(post?.youtubeUrl!);
-    setVideoId(videoId);
-    setPost(post);
-  }, [params.id]);
+    setIsLoading(false);
+  }, [setBlogs]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const post = blogs.find((p) => p.id === params.id);
+      if (!post) {
+        notFound();
+      }
+      const videoId = getYoutubeVideoId(post?.youtubeUrl!);
+      setVideoId(videoId);
+      setPost(post);
+    }
+  }, [blogs, params.id, isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="flex items-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin" />
+          <span>Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!post) return null;
 
   const handleExportPdf = async () => {
     if (!contentRef.current) return;
